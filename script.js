@@ -41,13 +41,18 @@ $(".sel").css({
     "flex-direction": "column",
     "align-items": "center",
 })
-
+$("#selOpt").css({
+    "margin-top": "0px",
+})
+$("#selOptSec").css({
+    "margin-top": "0px",
+})
 
 
 // --------------- CODE FOR SELECT TAG ELEMENT  --------------------  //
 
 let x = 0;   //  we use this because all the OPTIONS elements must append only once on clicking select element
-let mainObjLength=0;
+let mainObjLength = 0;
 let run = () => {
     let xhrRn = new XMLHttpRequest();
     x++;         //   for x==1;
@@ -56,6 +61,11 @@ let run = () => {
     let data = "";
     let mainObj = ""
 
+    // below line code is for deleting options of subbreed, because it increases on every search.
+    let sub = document.getElementsByClassName("subBreed");
+    for (let i = 0; i < sub.length; i++) {
+        sub[i].style.display = "none";
+    }
     //  below code is also correct
 
     // xhrRn.onreadystatechange=()=>{
@@ -98,45 +108,51 @@ let run = () => {
     subBreedxhrRn.open("get", `https://dog.ceo/api/breed/${selectVal}/list`, true);
     subBreedxhrRn.send();
     subBreedxhrRn.onload = () => {
-        // if (x == 2) {
-            data = subBreedxhrRn.responseText;
-            data = JSON.parse(data)
-            console.log(data);
-            mainObj = data.message
-            console.log(mainObj, mainObj.length);
-            mainObjLength=mainObj.length;
-            if (mainObj.length >= 1 && selectVal!=="select") {
-                $("#sel").css({
-                    "display":"flex",
-                })
-                for (let key of mainObj) {
+        data = subBreedxhrRn.responseText;
+        data = JSON.parse(data)
+        // console.log(data);
+        mainObj = data.message
+        // console.log(mainObj, mainObj.length);
+        mainObjLength = mainObj.length;
+        if (mainObj.length >= 1 && selectVal !== "select") {
 
-                    let option = document.createElement("option");
-                    option.setAttribute("value", key);
-                    option.innerText = `${key}`
-                    select2.append(option);
-                    // console.log(key);
+            $("#sel").css({
+                "display": "block",
+            })
+            $("#h3").css({
+                "display": "block",
+                "text-align":"center",
+                "margin-top": "50px",
+            })
+            for (let key of mainObj) {
 
-                }
+                let option = document.createElement("option");
+                option.setAttribute("value", key);
+                option.setAttribute("class", "subBreed");
+                option.innerText = `${key}`
+                select2.append(option);
+                // console.log(key);
+
             }
-            else{
-                mainObj="";
-                $("#sel").css({
-                    "display":"none",
-                })
-            }
-        // }
+        }
+        else {
+            $("#sel").css({
+                "display": "none",
+            })
+            $("#h3").css({
+                "display": "none",
+            })
+        }
     }
 }
 let select = document.getElementById("selOpt");
 let select2 = document.getElementById("selOptSec");
 select.addEventListener("click", run);
 
-// https://dog.ceo/api/breed/greyhound/list
 
 // --------------- CODE FOR FIND BUTTON  --------------------  //
 let valu = "";
-let valu2="";
+let valu2 = "";
 let newVal = "";
 let newVal2 = "";
 let url = "";
@@ -148,15 +164,15 @@ let xhrReq = new XMLHttpRequest();
 function xhrR() {
     // valu = $("#input").val().toLowerCase();    //  this is for typing input field value
     valu = $("#selOpt").val();                    //  this is for Select/option field value
-    valu2=$("#selOptSec").val();    
+    valu2 = $("#selOptSec").val();
     $("#dogName").text(` Dog Name :-  ${valu}`);
     newVal = valu;
     newVal2 = valu2;
-    // console.log(valu);
-    if(mainObjLength>=1){
-        url=`https://dog.ceo/api/breed/${valu}/${valu2}/images/random`;
+    // console.log(valu, valu2);
+    if (mainObjLength >= 1) {
+        url = `https://dog.ceo/api/breed/${valu}/${valu2}/images/random`;
     }
-    else{
+    else {
         url = `https://dog.ceo/api/breed/${valu}/images/random`
     }
     xhrReq.open("get", url, true)
@@ -169,7 +185,10 @@ function xhrR() {
     $("#img").removeAttr("src");
     // valu = $("#input").val("");                  //  this is for blank field value after search
     valu = $("#selOpt").val("select");              //  this is for blank Select/option value after search
-    valu2=$("#selOptSec").val("select");  
+    valu2 = $("#selOptSec").val("select");
+    $("#sel").css({
+        "display": "none",
+    })
 }
 $("#inpSearch").click(xhrR);
 
@@ -177,11 +196,11 @@ $("#inpSearch").click(xhrR);
 // --------------- CODE FOR NEXT BUTTON  --------------------  //
 
 $("#next").click(() => {
-    let url="";
-    if(mainObjLength>=1){
-        url=`https://dog.ceo/api/breed/${newVal}/${newVal2}/images/random`;
+    let url = "";
+    if (mainObjLength >= 1) {
+        url = `https://dog.ceo/api/breed/${newVal}/${newVal2}/images/random`;
     }
-    else{
+    else {
         url = `https://dog.ceo/api/breed/${newVal}/images/random`;
     }
     xhrReq.open("get", url, true)
