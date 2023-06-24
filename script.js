@@ -3,52 +3,6 @@
 // for random image of african dog we can change african to boxer        ---   https://dog.ceo/api/breed/african/images/random
 
 
-// styling  by jQuery
-
-$("#img").css({
-    "width": "250px",
-    "height": "250px",
-    "box-shadow": "2px 2px 10px 5px black",
-    "color": "black",
-    "font-weight": "bolder",
-})
-$("#display").css({
-    "background-color": "grey",
-    "width": "fit-content",
-    "margin-top": "30px",
-    "border": "1px solid red",
-})
-$(".input").css({
-    "outline": "none",
-    "text-align": "center",
-    "margin-top": "50px",
-    "height": "30px",
-    "width": "15rem",
-    "font-size": "1.2rem",
-    "border": "1px solid grey",
-    "box-shadow": "2px 2px 10px -2px black",
-})
-$("#dogName").css({
-    "text-align": "center",
-})
-$("#main").css({
-    "display": "flex",
-    "flex-direction": "column",
-    "align-items": "center",
-})
-$(".sel").css({
-    "display": "flex",
-    "flex-direction": "column",
-    "align-items": "center",
-})
-$("#selOpt").css({
-    "margin-top": "0px",
-})
-$("#selOptSec").css({
-    "margin-top": "0px",
-})
-
-
 // --------------- CODE FOR SELECT TAG ELEMENT  --------------------  //
 
 let x = 0;   //  we use this because all the OPTIONS elements must append only once on clicking select element
@@ -169,10 +123,12 @@ function xhrR() {
     newVal = valu;
     newVal2 = valu2;
     // console.log(valu, valu2);
-    if (mainObjLength >= 1) {
+    if (mainObjLength >= 1 && valu2!="select") {
+        // console.log(valu2+" "+ "if");
         url = `https://dog.ceo/api/breed/${valu}/${valu2}/images/random`;
     }
     else {
+        // console.log(valu2+" "+" else");
         url = `https://dog.ceo/api/breed/${valu}/images/random`
     }
     xhrReq.open("get", url, true)
@@ -197,10 +153,12 @@ $("#inpSearch").click(xhrR);
 
 $("#next").click(() => {
     let url = "";
-    if (mainObjLength >= 1) {
+    if (mainObjLength >= 1 && newVal2!="select") {
+        // console.log(newVal2);
         url = `https://dog.ceo/api/breed/${newVal}/${newVal2}/images/random`;
     }
     else {
+        // console.log(newVal2);
         url = `https://dog.ceo/api/breed/${newVal}/images/random`;
     }
     xhrReq.open("get", url, true)
